@@ -1,0 +1,38 @@
+// get registration information from the user
+username = getInput('username');
+password1 = getInput('password1');
+password2 = getInput('password2');
+
+// validate
+if(password1 != password2)
+	return redirectBackWithError("passwords don't match");
+	
+// hash password
+password = hash(password1);
+
+// create html title
+title = "<h1>Welcome " + username + "</h1>";
+
+// initialize database
+db = getDatabase();
+
+// create user
+result = db->query("INSERT INTO " + table + " (username, password) 
+	VALUES ('" + username + "', '" + password + "')";
+
+// check if there was an error
+if(!result){
+	return "<html>
+				<body>
+					<h1>There was an error!</h1>
+				</body>
+			</html>";
+}
+
+// if no error, return the welcome page
+return "<html>
+			<body>
+				" + title + "
+				<p> thank you for registering with our website! </p>
+			</body>
+		</html>";	
