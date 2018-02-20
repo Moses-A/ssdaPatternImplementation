@@ -4,7 +4,7 @@ public class VGAPlug implements VideoPlug{
 	// constructor
 	public VGAPlug(){};
 	
-	plug display(int width, int height){
+	public display(int width, int height){
 		print "Displaying a " + width + " by " +
 			height + " analog image!";
 	}
