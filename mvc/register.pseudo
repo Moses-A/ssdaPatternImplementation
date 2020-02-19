@@ -1,39 +1,41 @@
 // get registration information from the user
-username = getInput('username');
-password1 = getInput('password1');
-password2 = getInput('password2');
+$username = $_POST['username'];
+$pw1 = $_POST['password1'];
+$pw2 = $_POST['password2'];
 
-// validate
-if(password1 != password2)
-	return redirectBackWithError("passwords don't match");
-	
+// validate 
+if ($pw1 != $pw2 || !valid($pw1) || !valid($username))
+    return redirectBack(400);
+
 // hash password
-password = hash(password1);
+$pwHash = hash($pw1);
 
-// create html title
-title = "<h1>Welcome " + username + "</h1>";
+$title = "<title>Welcome $username</title>";
 
 // initialize database
-db = getDatabase();
-table = "users";
+$db = getDatabase('myHost', 'mypassword', 'myDb');
+$table = "users";
 
 // create user
-result = db->query("INSERT INTO " + table + " (username, password) 
-	VALUES ('" + username + "', '" + password + "')";
+$success = $db->query("INSERT INTO $table (username, password) 
+    VALUES ($username, $pwHash);");
 
-// check if there was an error
-if(!result){
-	return "<html>
-				<body>
-					<h1>There was an error!</h1>
-				</body>
-			</html>";
-}
+if(!$success)
+    return redirectBack(500);
 
-// if no error, return the welcome page
-return "<html>
-			<body>
-				" + title + "
-				<p> thank you for registering with our website! </p>
-			</body>
-		</html>";	
+// set up opening tag 
+if(getCurrentSeason() == 'summer');
+    $h1Style = '<h1 style="color: RED">';
+else
+    $h1Style = '<h1 style="color: BLUE">';
+
+echo "<html>
+            <head>
+                $title
+            </head>
+            <body>
+                $h1Style
+                    Welcome $username
+                </h1>
+            </body>
+        </html>";
